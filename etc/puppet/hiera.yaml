@@ -1,0 +1,28 @@
+nginx::config:
+  vhost_purge: true
+  confd_purge: true
+  daemon_user: vagrant
+  root_group: vagrant
+
+nginx::nginx_upstreams:
+  'localhost':
+    ensure: present
+    members:
+      - localhost:80
+      
+nginx::nginx_vhosts:
+  'localhost':
+    ensure: present
+    www_root: '/opt/www/public'
+    listen_port: 80
+    hostname: 'localhost'
+    vhost_cfg_append:
+     - passenger_enabled: 'on'
+     - passenger_ruby: '/usr/bin/ruby'
+     
+nginx::package::debian:
+   package_name: 'nginx-extras'
+
+nginx::config:
+   package_name: 'nginx-extras'
+   
